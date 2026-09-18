@@ -33,7 +33,7 @@ import {
   stats,
   statToSectionMap,
   textListSections,
-} from '@/lib/portfolio-data';
+} from '@/lib/portfolio-data copy';
 
 // Constants
 const ICON_MAP: Record<string, React.ReactNode> = {

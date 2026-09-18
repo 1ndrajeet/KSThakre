@@ -1,4 +1,4 @@
-// src/routes/index copy.tsx
+// page.tsx
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { createFileRoute, Link } from '@tanstack/react-router';
@@ -19,32 +19,30 @@ import {
   FaTrophy,
   FaUsers,
 } from 'react-icons/fa';
-import { SiScopus } from 'react-icons/si';
+import { SiGooglescholar, SiScopus } from 'react-icons/si';
 
 import {
-  achievements,
-  coAuthors,
+  awards,
   coursesPG,
   coursesUG,
   education,
   experience,
   navItems,
   patents,
+  pcMemberRoles,
   pgUgProjects,
   profile,
   publications,
   type PublicationType,
   publicationTypeOrder,
-  researchGrants,
+  researchProjects,
   socialLinks,
   stats,
   statToSectionMap,
-  textListSectionsTop,
-  textListSectionsMiddle,
-  textListSectionsBottom,
-} from '@/lib/portfolio-data';
+  textListSections,
+} from '@/lib/portfolio-data copy';
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/index copy')({
   head: () => ({
     meta: [
       { title: 'Dr. Kalpana Sunil Thakre — HOD, Computer Engineering, MMCOE Pune' },
@@ -74,7 +72,6 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   wos: <FaGlobe />,
   scholar: <FaGraduationCap />,
   email: <FaEnvelope />,
-  vidwan: <FaGraduationCap />,
 };
 
 const BRAND_COLORS: Record<string, string> = {
@@ -84,7 +81,6 @@ const BRAND_COLORS: Record<string, string> = {
   scopus: 'hover:text-[#E9711C] hover:border-[#E9711C]/50',
   wos: 'hover:text-[#8B008B] hover:border-[#8B008B]/50',
   email: 'hover:text-accent hover:border-accent/50',
-  vidwan: 'hover:text-[#1E6B52] hover:border-[#1E6B52]/50',
 };
 
 const DISPLAY_NAMES: Record<string, string> = {
@@ -94,7 +90,6 @@ const DISPLAY_NAMES: Record<string, string> = {
   scopus: 'Scopus',
   wos: 'Web of Science',
   email: 'Email',
-  vidwan: 'Vidwan',
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -103,12 +98,18 @@ const STATUS_COLORS: Record<string, string> = {
   Submitted: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
 };
 
+// Type tags for publications — small, muted, distinct hues per type so the
+// eye can scan the list by kind without re-reading the label every time.
 const PUB_TYPE_COLORS: Record<string, string> = {
   Journal: 'bg-sky-500/10 text-sky-500 border-sky-500',
   Conference: 'bg-violet-500/10 text-violet-500 border-violet-500',
   'Book Chapter': 'bg-teal-500/10 text-teal-500 border-teal-500',
+  Patent: 'bg-amber-500/20 text-amber-500 border-amber-500',
 };
 
+// Best-effort icon per stat, matched by keywords in the label. Falls back to
+// a generic document icon so this never breaks if the data file's labels
+// change shape.
 const STAT_ICON_RULES: Array<[RegExp, React.ReactNode]> = [
   [/public/i, <FaBook />],
   [/award|honor/i, <FaTrophy />],
@@ -125,16 +126,11 @@ const GLASS_CARD = {
   boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
 };
 
-const stripDisplayYear = (s: string): string =>
-  s
-    .replace(/\s*\((?:[^)]*\b(?:19|20)\d{2}\b[^)]*)\)\s*$/u, '')
-    .replace(/\s*[—-]\s*(?:19|20)\d{2}(?:\s*[–-]\s*(?:19|20)?\d{2})?\s*$/u, '')
-    .trim();
-
 // ---------------------------------------------------------------------------
-// Motion primitives
+// Motion primitives (IntersectionObserver-based — no extra dependency)
 // ---------------------------------------------------------------------------
 
+/** Fires `true` once the element has entered the viewport, then stays true. */
 function useInView<T extends HTMLElement>(options?: IntersectionObserverInit) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
@@ -142,6 +138,7 @@ function useInView<T extends HTMLElement>(options?: IntersectionObserverInit) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // Respect reduced-motion users by revealing immediately.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setInView(true);
       return;
@@ -162,6 +159,7 @@ function useInView<T extends HTMLElement>(options?: IntersectionObserverInit) {
   return { ref, inView } as const;
 }
 
+/** Fades + lifts children into place the first time they scroll into view. */
 const Reveal = ({
   children,
   delay = 0,
@@ -175,8 +173,9 @@ const Reveal = ({
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ease-out motion-reduce:transform-none motion-reduce:transition-none ${inView ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-        } ${className}`}
+      className={`transition-all duration-700 ease-out motion-reduce:transform-none motion-reduce:transition-none ${
+        inView ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+      } ${className}`}
       style={{ transitionDelay: inView ? `${delay}ms` : '0ms' }}
     >
       {children}
@@ -184,6 +183,7 @@ const Reveal = ({
   );
 };
 
+/** Thin accent progress bar pinned to the top of the viewport. */
 const ScrollProgressBar = () => {
   const [progress, setProgress] = useState(0);
 
@@ -285,6 +285,7 @@ const StatusBadge = ({ status }: { status: string }) => (
   </span>
 );
 
+/** Parses "2015 – Present" / "2018–2021" style strings into a short badge. */
 const getDuration = (period?: string): { label: string; isCurrent: boolean } | null => {
   if (!period) return null;
   const isCurrent = /present/i.test(period);
@@ -313,13 +314,17 @@ const TimelineItem = ({
 }) => {
   const duration = getDuration(period);
   return (
-    <Reveal className="group relative" delay={40}>
+    <Reveal
+      className="group relative"
+      delay={40}
+    >
       <li className="relative list-none">
         <span
-          className={`ring-background absolute top-1.5 -left-[30px] h-2.5 w-2.5 rounded-full ring-4 transition-all duration-300 group-hover:scale-125 ${duration?.isCurrent
-            ? 'bg-accent animate-pulse-slow'
-            : 'bg-accent group-hover:ring-accent/30'
-            }`}
+          className={`ring-background absolute top-1.5 -left-[30px] h-2.5 w-2.5 rounded-full ring-4 transition-all duration-300 group-hover:scale-125 ${
+            duration?.isCurrent
+              ? 'bg-accent animate-pulse-slow'
+              : 'bg-accent group-hover:ring-accent/30'
+          }`}
         />
         <div className="ml-0">
           <div className="flex flex-wrap items-baseline justify-between gap-4">
@@ -332,10 +337,11 @@ const TimelineItem = ({
             <p className="text-muted-foreground 70 text-sm">{subtitle}</p>
             {duration && (
               <span
-                className={`rounded-full border px-2 py-0.5 text-[10px] tracking-wider uppercase ${duration.isCurrent
-                  ? 'bg-accent/15 text-accent border-accent/30'
-                  : 'bg-accent/5 text-accent/60 border-accent/15'
-                  }`}
+                className={`rounded-full border px-2 py-0.5 text-[10px] tracking-wider uppercase ${
+                  duration.isCurrent
+                    ? 'bg-accent/15 text-accent border-accent/30'
+                    : 'bg-accent/5 text-accent/60 border-accent/15'
+                }`}
               >
                 {duration.isCurrent ? 'Current' : duration.label}
               </span>
@@ -349,13 +355,17 @@ const TimelineItem = ({
   );
 };
 
+/** Bolds the profile owner's surname within a publication author list. */
 const highlightAuthor = (authors: string) => {
   const surname = profile.name.trim().split(' ').slice(-1)[0];
   if (!surname) return authors;
   const parts = authors.split(new RegExp(`(${surname})`, 'i'));
   return parts.map((part, i) =>
     part.toLowerCase() === surname.toLowerCase() ? (
-      <strong key={i} className="text-ink/90 font-medium not-italic">
+      <strong
+        key={i}
+        className="text-ink/90 font-medium not-italic"
+      >
         {part}
       </strong>
     ) : (
@@ -414,31 +424,7 @@ const PublicationItem = ({
   </Reveal>
 );
 
-const PatentRow = ({
-  year,
-  authors,
-  title,
-  venue,
-}: {
-  year: string;
-  authors: string;
-  title: string;
-  venue: string;
-}) => (
-  <Reveal>
-    <li className="group hover:bg-accent/5 -mx-3 grid grid-cols-[60px_1fr] gap-4 rounded-lg p-3 transition-colors duration-300">
-      <div className="pt-0.5">
-        <div className="text-accent/60 font-mono text-xl font-light">{year}</div>
-      </div>
-      <div>
-        <h4 className="text-ink font-serif text-base leading-snug font-light">{title}</h4>
-        <p className="text-muted-foreground 60 mt-1 text-xs italic">{highlightAuthor(authors)}</p>
-        <p className="text-muted-foreground 50 mt-0.5 text-xs">{venue}</p>
-      </div>
-    </li>
-  </Reveal>
-);
-
+/** Underline-on-hover link wrapper used for nav-adjacent inline links. */
 const UnderlineLink = ({
   href,
   children,
@@ -517,10 +503,11 @@ const StatsCard = ({ value, label, index, countedStats, statId }: any) => {
 const FilterButton = ({ type, count, active, onClick }: any) => (
   <button
     onClick={() => onClick(type)}
-    className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-all duration-300 ${active
-      ? 'bg-accent text-background border-accent shadow-[0_0_25px_rgba(232,168,124,0.15)]'
-      : 'border-border/50 text-muted-foreground hover:border-accent/50 hover:text-accent'
-      }`}
+    className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-all duration-300 ${
+      active
+        ? 'bg-accent text-background border-accent shadow-[0_0_25px_rgba(232,168,124,0.15)]'
+        : 'border-border/50 text-muted-foreground hover:border-accent/50 hover:text-accent'
+    }`}
   >
     {type} <span className={active ? 'text-background/70' : 'opacity-50'}>({count})</span>
   </button>
@@ -576,6 +563,8 @@ function PortfolioPage() {
     setMenuOpen(false);
   }, []);
 
+  // Keyboard navigation: Up/Down cycles through sections when the user
+  // isn't typing into a form control.
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement)?.tagName;
@@ -624,6 +613,34 @@ function PortfolioPage() {
   const initials = 'KT';
 
   const renderListSection = (s: any) => {
+    if (s.id === 'technical-skills') {
+      return (
+        <div className="flex flex-wrap gap-1.5">
+          {s.items.map((it: string) => (
+            <span
+              key={it}
+              className="bg-muted/30 text-ink/80 border-border/30 hover:border-accent/30 rounded-lg border px-3 py-1.5 text-xs transition-all duration-300 hover:-translate-y-0.5"
+            >
+              {it}
+            </span>
+          ))}
+        </div>
+      );
+    }
+    if (s.id === 'area-of-interest') {
+      return (
+        <div className="grid gap-3 md:grid-cols-2">
+          {s.items.map((it: string) => (
+            <div
+              key={it}
+              className="border-border/30 bg-card/30 text-ink/80 hover:border-accent/30 rounded-lg border p-4 font-serif text-sm transition-colors duration-300"
+            >
+              {it}
+            </div>
+          ))}
+        </div>
+      );
+    }
     if (s.id === 'professional-membership') {
       return (
         <ul className="grid gap-3 md:grid-cols-3">
@@ -638,12 +655,13 @@ function PortfolioPage() {
         </ul>
       );
     }
-    const items: string[] =
-      s.id === 'university-services' ? s.items.map((it: string) => stripDisplayYear(it)) : s.items;
     return (
       <ul className="space-y-3">
-        {items.map((it: string, i: number) => (
-          <li key={i} className="text-muted-foreground 60 group flex gap-3 text-xs">
+        {s.items.map((it: string, i: number) => (
+          <li
+            key={i}
+            className="text-muted-foreground 60 group flex gap-3 text-xs"
+          >
             <span className="text-accent/30 group-hover:text-accent/60 shrink-0 transition-colors">
               ◆
             </span>
@@ -653,21 +671,6 @@ function PortfolioPage() {
       </ul>
     );
   };
-
-  const renderTextListSections = (sections: typeof textListSectionsTop) =>
-    sections.map((s) => (
-      <Section key={s.id} id={s.id} refCb={registerRef(s.id)}>
-        <SectionHeading
-          eyebrow={s.eyebrow}
-          title={s.title}
-          sectionNum={getSectionNum(s.id)}
-        />
-        {s.intro && (
-          <p className="text-muted-foreground 60 mb-5 text-xs leading-relaxed">{s.intro}</p>
-        )}
-        <Reveal>{renderListSection(s)}</Reveal>
-      </Section>
-    ));
 
   return (
     <div className="bg-background text-foreground min-h-screen">
@@ -754,8 +757,9 @@ function PortfolioPage() {
                     <button
                       onClick={() => goTo(item.id)}
                       aria-current={active ? 'true' : undefined}
-                      className={`group focus-visible:outline-accent/60 relative w-full rounded-lg px-3 py-2 text-left text-xs transition-all duration-300 focus-visible:outline focus-visible:outline-2 ${active ? 'text-accent font-medium' : 'text-muted-foreground hover:text-ink'
-                        }`}
+                      className={`group focus-visible:outline-accent/60 relative w-full rounded-lg px-3 py-2 text-left text-xs transition-all duration-300 focus-visible:outline focus-visible:outline-2 ${
+                        active ? 'text-accent font-medium' : 'text-muted-foreground hover:text-ink'
+                      }`}
                     >
                       <span className="relative z-10 flex items-center gap-2.5">
                         <span
@@ -769,8 +773,9 @@ function PortfolioPage() {
                         <span className="bg-accent/10 border-accent/20 absolute inset-0 rounded-lg border" />
                       )}
                       <span
-                        className={`absolute top-1/2 left-0 h-5 w-0.5 -translate-y-1/2 rounded-full transition-all duration-300 ${active ? 'bg-accent h-6' : 'bg-transparent group-hover:h-3'
-                          }`}
+                        className={`absolute top-1/2 left-0 h-5 w-0.5 -translate-y-1/2 rounded-full transition-all duration-300 ${
+                          active ? 'bg-accent h-6' : 'bg-transparent group-hover:h-3'
+                        }`}
                       />
                     </button>
                   </li>
@@ -796,8 +801,12 @@ function PortfolioPage() {
         {/* Main content */}
         <main className="min-w-0 flex-1 lg:ml-0">
           <div className="mx-auto max-w-4xl px-4 md:px-8 lg:px-12">
-            {/* 1. Hero / Overview */}
-            <Section id="home" refCb={registerRef('home')} className="pt-8">
+            {/* Hero */}
+            <Section
+              id="home"
+              refCb={registerRef('home')}
+              className="pt-8"
+            >
               <div className="relative">
                 <div className="bg-accent/5 absolute -top-16 -right-16 h-48 w-48 rounded-full blur-3xl" />
                 <p className="eyebrow text-accent/60 mb-2 text-xs tracking-[0.15em]">
@@ -805,7 +814,10 @@ function PortfolioPage() {
                 </p>
                 <h1 className="text-ink font-serif text-4xl leading-[1.05] font-light tracking-tight md:text-6xl">
                   {profile.name.split(' ').map((word, i) => (
-                    <span key={i} className="block md:mr-4 md:inline-block">
+                    <span
+                      key={i}
+                      className="block md:mr-4 md:inline-block"
+                    >
                       {word}
                     </span>
                   ))}
@@ -832,11 +844,15 @@ function PortfolioPage() {
 
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   {socialLinks.map((s) => (
-                    <SocialLink key={s.id} id={s.id} href={s.href} label={s.label} />
+                    <SocialLink
+                      key={s.id}
+                      id={s.id}
+                      href={s.href}
+                      label={s.label}
+                    />
                   ))}
                 </div>
 
-                {/* 2. Statistics */}
                 <dl
                   id="stats"
                   className="mt-10 grid scroll-mt-8 grid-cols-2 gap-3 md:grid-cols-4"
@@ -866,8 +882,11 @@ function PortfolioPage() {
               </div>
             </Section>
 
-            {/* 3. Academic Qualification */}
-            <Section id="education" refCb={registerRef('education')}>
+            {/* Education */}
+            <Section
+              id="education"
+              refCb={registerRef('education')}
+            >
               <SectionHeading
                 eyebrow="Education"
                 title="Academic Qualification"
@@ -886,8 +905,11 @@ function PortfolioPage() {
               </ol>
             </Section>
 
-            {/* 4. Academic Experience */}
-            <Section id="experience" refCb={registerRef('experience')}>
+            {/* Experience */}
+            <Section
+              id="experience"
+              refCb={registerRef('experience')}
+            >
               <SectionHeading
                 eyebrow="Career"
                 title="Academic Experience"
@@ -906,15 +928,18 @@ function PortfolioPage() {
               </ol>
             </Section>
 
-            {/* 5. Research Grants */}
-            <Section id="research-grants" refCb={registerRef('research-grants')}>
+            {/* Research projects */}
+            <Section
+              id="research-projects"
+              refCb={registerRef('research-projects')}
+            >
               <SectionHeading
                 eyebrow="Funded Work"
-                title="Research Grants"
-                sectionNum={getSectionNum('research-grants')}
+                title="Research Projects"
+                sectionNum={getSectionNum('research-projects')}
               />
               <div className="grid gap-4">
-                {researchGrants.map((p) => (
+                {researchProjects.map((p) => (
                   <Reveal key={p.id}>
                     <GlassCard className="p-5">
                       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -924,28 +949,19 @@ function PortfolioPage() {
                         <StatusBadge status={p.status} />
                       </div>
                       <div className="text-muted-foreground 60 mt-3 flex flex-wrap gap-x-6 gap-y-1 text-xs">
-                        {p.funder && (
-                          <span>
-                            <strong className="text-ink/80 font-medium">Funder:</strong>{' '}
-                            {p.funder}
-                          </span>
-                        )}
-                        {p.amount && (
-                          <span>
-                            <strong className="text-ink/80 font-medium">Amount:</strong> {p.amount}
-                          </span>
-                        )}
-                        {p.period && (
-                          <span>
-                            <strong className="text-ink/80 font-medium">Period:</strong> {p.period}
-                          </span>
-                        )}
+                        <span>
+                          <strong className="text-ink/80 font-medium">Funder:</strong> {p.funder}
+                        </span>
+                        <span>
+                          <strong className="text-ink/80 font-medium">Amount:</strong> {p.amount}
+                        </span>
+                        <span>
+                          <strong className="text-ink/80 font-medium">Period:</strong> {p.period}
+                        </span>
                       </div>
-                      {p.description && (
-                        <p className="text-muted-foreground 70 mt-3 text-sm leading-relaxed">
-                          {p.description}
-                        </p>
-                      )}
+                      <p className="text-muted-foreground 70 mt-3 text-sm leading-relaxed">
+                        {p.description}
+                      </p>
                       {p.status === 'Ongoing' && (
                         <div className="bg-border/40 mt-4 h-1 overflow-hidden rounded-full">
                           <div className="from-accent/80 to-accent/30 h-full w-2/3 rounded-full bg-gradient-to-r" />
@@ -957,22 +973,11 @@ function PortfolioPage() {
               </div>
             </Section>
 
-            {/* 6. Patents */}
-            <Section id="patents" refCb={registerRef('patents')}>
-              <SectionHeading
-                eyebrow="Intellectual Property"
-                title="Patents"
-                sectionNum={getSectionNum('patents')}
-              />
-              <ul className="space-y-5">
-                {patents.map((p) => (
-                  <PatentRow key={p.id} {...p} />
-                ))}
-              </ul>
-            </Section>
-
-            {/* 7. Publications */}
-            <Section id="publications" refCb={registerRef('publications')}>
+            {/* Publications */}
+            <Section
+              id="publications"
+              refCb={registerRef('publications')}
+            >
               <SectionHeading
                 eyebrow="Scholarship"
                 title="Publications"
@@ -991,20 +996,26 @@ function PortfolioPage() {
               </div>
               <ul className="space-y-5">
                 {filteredPublications.map((p) => (
-                  <PublicationItem key={p.id} {...p} />
+                  <PublicationItem
+                    key={p.id}
+                    {...p}
+                  />
                 ))}
               </ul>
             </Section>
 
-            {/* 8. Achievements */}
-            <Section id="achievements" refCb={registerRef('achievements')}>
+            {/* Awards */}
+            <Section
+              id="awards"
+              refCb={registerRef('awards')}
+            >
               <SectionHeading
                 eyebrow="Honors"
-                title="Achievements"
-                sectionNum={getSectionNum('achievements')}
+                title="Awards"
+                sectionNum={getSectionNum('awards')}
               />
               <div className="grid gap-3 md:grid-cols-2">
-                {achievements.map((a) => (
+                {awards.map((a) => (
                   <Reveal key={a.id}>
                     <GlassCard className="p-4">
                       <div className="flex items-center justify-between">
@@ -1014,42 +1025,18 @@ function PortfolioPage() {
                       <h3 className="text-ink mt-2 font-serif text-base leading-snug font-light">
                         {a.title}
                       </h3>
-                      {a.organization && (
-                        <p className="text-muted-foreground 50 mt-1 text-xs">{a.organization}</p>
-                      )}
+                      <p className="text-muted-foreground 50 mt-1 text-xs">{a.organization}</p>
                     </GlassCard>
                   </Reveal>
                 ))}
               </div>
             </Section>
 
-            {/* 9. FDP / Workshops Organized */}
-            {renderTextListSections(textListSectionsTop)}
-
-            {/* 10. Co-authors */}
-            <Section id="co-authors" refCb={registerRef('co-authors')}>
-              <SectionHeading
-                eyebrow="Collaboration"
-                title="Co-authors"
-                sectionNum={getSectionNum('co-authors')}
-              />
-              <ul className="grid gap-3 md:grid-cols-2">
-                {coAuthors.map((c) => (
-                  <Reveal key={c.id}>
-                    <GlassCard className="p-4">
-                      <h3 className="text-ink font-serif text-base leading-snug font-light">
-                        {c.name}
-                      </h3>
-                      <p className="text-muted-foreground 60 mt-1 text-xs">{c.affiliation}</p>
-                      <p className="text-muted-foreground 50 mt-0.5 text-xs">{c.verifiedEmail}</p>
-                    </GlassCard>
-                  </Reveal>
-                ))}
-              </ul>
-            </Section>
-
-            {/* 11. PG / UG Guidance */}
-            <Section id="pg-ug-guidance" refCb={registerRef('pg-ug-guidance')}>
+            {/* PG/UG Guidance */}
+            <Section
+              id="pg-ug-guidance"
+              refCb={registerRef('pg-ug-guidance')}
+            >
               <SectionHeading
                 eyebrow="Mentorship"
                 title="PG / UG Guidance"
@@ -1060,7 +1047,10 @@ function PortfolioPage() {
               </p>
               <ul className="grid gap-x-6 gap-y-2.5 md:grid-cols-2">
                 {pgUgProjects.map((t, i) => (
-                  <li key={i} className="group flex gap-3 text-xs">
+                  <li
+                    key={i}
+                    className="group flex gap-3 text-xs"
+                  >
                     <span className="text-accent/50 group-hover:text-accent mt-0.5 shrink-0 transition-colors">
                       ◆
                     </span>
@@ -1072,11 +1062,33 @@ function PortfolioPage() {
               </ul>
             </Section>
 
-            {/* 12–13. PC Member / Editor / Reviewer + University Services */}
-            {renderTextListSections(textListSectionsMiddle)}
+            {/* PC Member */}
+            <Section
+              id="pc-member"
+              refCb={registerRef('pc-member')}
+            >
+              <SectionHeading
+                eyebrow="Service"
+                title="PC Member / Editor / Reviewer"
+                sectionNum={getSectionNum('pc-member')}
+              />
+              <ul className="space-y-3">
+                {pcMemberRoles.map((r, i) => (
+                  <li
+                    key={i}
+                    className="text-muted-foreground 60 border-border/50 hover:border-accent/50 hover:text-ink/80 flex gap-3 border-l-2 py-1.5 pl-4 text-xs transition-colors duration-300"
+                  >
+                    {r}
+                  </li>
+                ))}
+              </ul>
+            </Section>
 
-            {/* 14. Courses Taught */}
-            <Section id="courses-taught" refCb={registerRef('courses-taught')}>
+            {/* Courses */}
+            <Section
+              id="courses-taught"
+              refCb={registerRef('courses-taught')}
+            >
               <SectionHeading
                 eyebrow="Teaching"
                 title="Courses Taught"
@@ -1087,7 +1099,10 @@ function PortfolioPage() {
                   <h3 className="eyebrow text-accent/60 mb-3 text-xs">Undergraduate</h3>
                   <ul className="space-y-2">
                     {coursesUG.map((c) => (
-                      <li key={c} className="text-muted-foreground 60 group flex gap-2.5 text-xs">
+                      <li
+                        key={c}
+                        className="text-muted-foreground 60 group flex gap-2.5 text-xs"
+                      >
                         <span className="text-accent/30 group-hover:text-accent/60 transition-colors">
                           ›
                         </span>{' '}
@@ -1100,7 +1115,10 @@ function PortfolioPage() {
                   <h3 className="eyebrow text-accent/60 mb-3 text-xs">Postgraduate</h3>
                   <ul className="space-y-2">
                     {coursesPG.map((c) => (
-                      <li key={c} className="text-muted-foreground 60 group flex gap-2.5 text-xs">
+                      <li
+                        key={c}
+                        className="text-muted-foreground 60 group flex gap-2.5 text-xs"
+                      >
                         <span className="text-accent/30 group-hover:text-accent/60 transition-colors">
                           ›
                         </span>{' '}
@@ -1112,8 +1130,50 @@ function PortfolioPage() {
               </div>
             </Section>
 
-            {/* 15–18. Expert Lectures + FDP Attended + Professional Membership + Roles */}
-            {renderTextListSections(textListSectionsBottom)}
+            {/* Text list sections + Patents special */}
+            {textListSections.map((s) => {
+              const beforePatents = s.id === 'research-grants';
+              return (
+                <div key={s.id}>
+                  {beforePatents && (
+                    <Section
+                      id="patents"
+                      refCb={registerRef('patents')}
+                    >
+                      <SectionHeading
+                        eyebrow="Intellectual Property"
+                        title="Patents"
+                        sectionNum={getSectionNum('patents')}
+                      />
+                      <ul className="space-y-5">
+                        {patents.map((p) => (
+                          <PublicationItem
+                            key={p.id}
+                            {...p}
+                          />
+                        ))}
+                      </ul>
+                    </Section>
+                  )}
+                  <Section
+                    id={s.id}
+                    refCb={registerRef(s.id)}
+                  >
+                    <SectionHeading
+                      eyebrow={s.eyebrow}
+                      title={s.title}
+                      sectionNum={getSectionNum(s.id)}
+                    />
+                    {s.intro && (
+                      <p className="text-muted-foreground 60 mb-5 text-xs leading-relaxed">
+                        {s.intro}
+                      </p>
+                    )}
+                    <Reveal>{renderListSection(s)}</Reveal>
+                  </Section>
+                </div>
+              );
+            })}
 
             {/* Footer */}
             <footer className="py-10 text-center">
