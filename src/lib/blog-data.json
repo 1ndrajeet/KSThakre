@@ -1,0 +1,109 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "slug": "the-art-of-reading-slowly",
+      "title": "The Art of Reading Slowly",
+      "excerpt": "In a world that demands speed, choosing to read slowly is a small act of rebellion. Here's why I'm learning to linger.",
+      "content": "I used to be a speed reader. Not the kind who could do five hundred words a minute, but the kind who treated books like tasks. Finish one, log it, move on. For a few years I read something like sixty books annually and could tell you almost nothing about any of them beyond a one-line verdict.\n\nIt took an embarrassingly long time to notice that I wasn't reading. I was consuming. There is a difference, and the difference is where the whole pleasure lives.\n\n## Where it changed\n\nThe shift happened with Italo Calvino's *If on a winter's night a traveler*. The book is about reading — about anticipation, interruption, the particular ache of being pulled out of a story. Reading it quickly would have been a kind of joke. So I slowed down, and found myself going back over passages two or three times, not because they were difficult but because they were good.\n\nThat was the first time in years I had reread something for pleasure rather than comprehension.\n\n## What slow reading actually looks like\n\nIt is less romantic than it sounds. In practice it means:\n\n- Reading with a pencil, and accepting that the book is now a used object.\n- Stopping at the end of a section instead of at the end of a chapter.\n- Writing two or three sentences afterwards, in my own words, without looking at the page.\n- Letting a book sit half-finished for a week if it needs to.\n\nThe last one was hardest. An unfinished book used to feel like a debt.\n\n> A book is not finished when you reach the last page. It is finished when you stop thinking about it.\n\n## The trade\n\nI read maybe eighteen books last year. I remember all of them. I can argue with most of them. A few changed how I think about work I have been doing for twenty years, which is not something a summary or a podcast episode has ever done for me.\n\nSlow reading is not efficient, and it is not productive in any sense a spreadsheet would recognise. It is just the only version of reading that has ever given me anything back.",
+      "tags": ["books", "thoughts", "essays"],
+      "visibility": "public",
+      "publishedAt": "2026-08-12T10:00:00.000Z",
+      "author": {
+        "name": "Kalpana Thakre"
+      }
+    },
+    {
+      "id": "2",
+      "slug": "white-nights-and-the-beauty-of-melancholy",
+      "title": "White Nights and the Beauty of Melancholy",
+      "excerpt": "Dostoevsky's brief novel captures something essential about loneliness and the desperate hope that comes with human connection.",
+      "content": "There is a moment near the middle of *White Nights* where the narrator — never named, only ever \"the dreamer\" — tells Nastenka how he has lived. Years of walking Petersburg at night. Conversations held entirely in his head. A life so thoroughly imagined that the real one has quietly gone missing.\n\nIt is a devastating passage. It is also, oddly, a hopeful one, and the reason is that he is finally saying it out loud to someone.\n\n## Melancholy is not the opposite of joy\n\nDostoevsky understood something we keep forgetting: sadness and joy are not opposites, they are neighbours. The capacity to be undone by loneliness is the same capacity that lets you be undone by a piece of music or by someone being kind to you unexpectedly. You do not get to keep one and discard the other.\n\nThe dreamer is ridiculous in places. He talks too much. He falls in love in four days. Dostoevsky lets him be ridiculous and takes him seriously at the same time, which is a harder trick than it looks.\n\n## Reading it twice, twenty years apart\n\nI first read it in my early twenties and found it slight. I wanted plot. Nothing happens: two people meet on four nights, one of them leaves, the end.\n\nReading it again much later, the absence of plot is the whole point. The book is not about events. It is about the texture of hoping for something you suspect you will not get, and going ahead and hoping anyway.\n\n## The last page\n\nHis closing lines are the reason the book stays with people:\n\n> My God! A whole moment of happiness! Is that too little for the whole of a man's life?\n\nHe has been left. He does not curse her, and he does not perform his suffering. He decides that one moment was worth it. That is not resignation. It is a fairly hard-won generosity, and it is the most adult thing in the book.",
+      "tags": ["books", "philosophy", "essays"],
+      "visibility": "public",
+      "publishedAt": "2026-08-08T14:30:00.000Z",
+      "author": {
+        "name": "Kalpana Thakre"
+      }
+    },
+    {
+      "id": "3",
+      "slug": "on-writing-research-papers-without-losing-your-soul",
+      "title": "On Writing Research Papers Without Losing Your Soul",
+      "excerpt": "Academic writing doesn't have to be soulless. Here's how I try to maintain a voice in a system that demands uniformity.",
+      "content": "I have written more than sixty papers. Most of them follow a formula. That is not a complaint — the formula exists because reviewers need to find things quickly, and because a paper is a technical document before it is anything else.\n\nBut there is a difference between writing to a structure and writing without a voice, and a lot of academic prose has quietly given up on the second thing.\n\n## What actually goes wrong\n\nThe failures I see most often in drafts I review, in roughly the order they annoy me:\n\n1. Sentences built to sound authoritative rather than to be understood.\n2. Passive voice used to hide who did what, and therefore who is responsible for the claim.\n3. An introduction that surveys the field for two pages before saying what the paper does.\n4. Hedging stacked three deep: *it may possibly be suggested that*.\n5. Contributions listed at the end, where nobody reads them.\n\nNone of these are style problems. They are clarity problems wearing formal clothes.\n\n## The habits that help\n\nSay what you did, in the first paragraph, in one sentence. If you cannot, the work is not finished — the writing is just where you found out.\n\nUse *we*. It is accepted almost everywhere now, and it forces you to own the claim.\n\nWrite the abstract last, and write it as if explaining the paper to a competent colleague from a neighbouring field who has four minutes.\n\n> If a sentence has to be read twice to be parsed, it is the sentence that is wrong, not the reader.\n\nRead your own paragraphs aloud. It is a crude test and it catches an enormous amount.\n\n## Voice within constraints\n\nVoice in a research paper is not jokes or flourishes. It is the sense that a specific person made specific choices: this experiment rather than that one, this framing, this honest sentence about what did not work. The methods section is where most people go flat, and it is exactly where a reader who is trying to build on your work is paying closest attention.\n\nThe papers I return to years later are the ones where somebody was thinking on the page, not performing rigour at me.",
+      "tags": ["research", "writing", "formal"],
+      "visibility": "public",
+      "publishedAt": "2026-08-04T09:00:00.000Z",
+      "author": {
+        "name": "Kalpana Thakre"
+      }
+    },
+    {
+      "id": "4",
+      "slug": "what-machine-learning-taught-me-about-being-human",
+      "title": "What Machine Learning Taught Me About Being Human",
+      "excerpt": "After years of working with algorithms, I've come to appreciate the things machines will never be able to do.",
+      "content": "I have spent a long time building systems that learn from examples. The technical parts are well documented elsewhere. What has stayed with me is smaller and harder to publish: a set of things the work has quietly taught me about people, including myself.\n\n## Most of the difficulty is in the labels\n\nEveryone new to the field wants to talk about models. Almost every project I have supervised got stuck somewhere else — on what counts as a correct answer. Two careful annotators, given the same clip and the same guidelines, disagree more than you would like. When they disagree, the disagreement is usually not carelessness. It is that the category itself was never as sharp as the specification pretended.\n\nHuman judgement is like that too. We argue about conclusions when the actual gap is in definitions nobody wrote down.\n\n## Generalisation is the whole problem\n\nA model that performs beautifully on its test set and falls apart in deployment has not learned the task. It has learned the dataset. Everyone knows this and everyone is surprised by it anyway.\n\n```text\ntrain accuracy   0.98\ntest accuracy    0.94\ndeployed         complaints\n```\n\nI think about that gap when I catch myself confident about something on the basis of a narrow slice of experience. Thirty years in one institution is a large training set and a very particular distribution.\n\n## Regularisation, roughly translated\n\nThe techniques that stop a model overfitting all amount to the same instruction: do not commit harder to your data than your data deserves. Hold something back. Prefer the simpler explanation. Add noise deliberately so you are not memorising accidents.\n\nIt is not a bad description of how to hold an opinion.\n\n## Where the metaphor breaks\n\nI want to be careful here, because \"the brain is a neural network\" is the kind of sentence that sounds profound and explains nothing. These systems do not understand anything. They fit functions. The resemblance is in the failure modes, not the mechanism — and that is exactly the part worth borrowing.",
+      "tags": ["technology", "research", "thoughts", "machine-learning"],
+      "visibility": "public",
+      "publishedAt": "2026-07-30T16:00:00.000Z",
+      "author": {
+        "name": "Kalpana Thakre"
+      },
+      "featured": true
+    },
+    {
+      "id": "5",
+      "slug": "private-thoughts-on-discipline",
+      "title": "Private Thoughts on Discipline",
+      "excerpt": "This is a personal note about the role of discipline in creative work.",
+      "content": "Not for publication. Notes to myself, mostly so I stop having the same argument every few months.\n\n## The thing I keep getting wrong\n\nI have treated discipline as a matter of will for most of my life, and then treated the days it fails as a character defect. That framing has never once produced a better week. It produces a bad mood and a fresh plan.\n\nWhat actually works is duller: reduce the number of decisions. The writing happens because the hour is already blocked and the file is already open, not because I summoned resolve at 6am.\n\n## Observations, unordered\n\n- Motivation arrives after starting, essentially never before. I know this and still wait for it.\n- Two bad days in a row is a pattern; one is weather. Only respond to patterns.\n- The tasks I avoid are almost always the ones where I am afraid of finding out the work is weaker than I hoped.\n- Fatigue and reluctance feel identical from the inside and require opposite responses.\n\n## On rest\n\nI am suspicious of how much of my rest is actually avoidance with better lighting. Real rest leaves me wanting to work. Scrolling does not. That is a reliable test and I apply it inconsistently.\n\n## Note for later\n\nStop rebuilding the system. The system is fine. Just sit down.",
+      "tags": ["private", "thoughts", "life"],
+      "visibility": "private",
+      "publishedAt": "2026-08-01T20:00:00.000Z",
+      "author": {
+        "name": "Kalpana Thakre"
+      }
+    },
+    {
+      "id": "6",
+      "slug": "video-retrieval-and-the-problem-of-meaning",
+      "title": "Video Retrieval and the Problem of Meaning",
+      "excerpt": "My research in video retrieval has been about more than algorithms. It's about how we find meaning in moving images.",
+      "content": "Content-based video retrieval has an old and unglamorous problem at its centre: the system matches features, and the person wants meaning. Everything difficult in the field lives in that gap.\n\n## The gap, concretely\n\nAsk for \"a crowd celebrating\" and a well-tuned system returns clips with high motion energy, warm colour distributions, dense faces. Some of them are celebrations. Some are protests. One is a riot. The features are behaving perfectly. The query was never about features.\n\nThis is what the literature calls the semantic gap, and the name makes it sound narrower than it is. It is not a gap between low-level and high-level descriptors. It is a gap between a similarity metric and human intent.\n\n## What we have tried\n\nBroadly, three families of response:\n\n1. **Better features.** Hand-crafted descriptors, then learned embeddings, then joint text-video spaces. Real progress, and it moves the boundary without removing it.\n2. **More supervision.** Larger annotated corpora, richer taxonomies. Expensive, and the annotation disagreements described above put a ceiling on it.\n3. **Keeping the user in the loop.** Relevance feedback, iterative refinement, query-by-example. Less fashionable, frequently the most effective thing in practice.\n\nThe third is where I keep ending up. A system that is wrong but corrigible in two clicks beats a system that is more often right and opaque.\n\n## Evaluation is quietly the hardest part\n\nPrecision at ten tells you very little about whether a search session succeeded. A user usually wants one usable clip, and does not care about the ranking of the other nine. We are measuring what is convenient rather than what matters, which is not unique to this field.\n\n> The retrieval question is not \"which clips are similar?\" but \"which clip ends this person's search?\"\n\n## Where it goes\n\nMultimodal models have compressed a lot of the feature-engineering work that occupied us for years, and that is genuinely good. They have not solved intent. A query is a compressed, ambiguous, context-dependent artefact of what someone actually wants, and no amount of embedding quality recovers information that was never in the string.",
+      "tags": ["research", "technology", "formal"],
+      "visibility": "public",
+      "publishedAt": "2026-07-25T11:00:00.000Z",
+      "author": {
+        "name": "Kalpana Thakre"
+      }
+    },
+    {
+      "id": "7",
+      "slug": "notes-on-teaching-and-being-taught",
+      "title": "Notes on Teaching and Being Taught",
+      "excerpt": "After decades of teaching, I've learned that the best teachers are always students.",
+      "content": "Thirty years of teaching the same subjects, and the lectures are not what I remember. I remember specific students, usually the ones who asked something I could not answer.\n\n## Explaining is a test\n\nYou do not know a topic until you have taught it to someone who is not being polite. Undergraduates in the third year are excellent at this. They will accept a definition and then ask the one question that reveals you learned the definition and not the reason.\n\nNormalisation is where this happens most reliably for me. It is easy to teach the forms and much harder to answer, honestly, why the third one is worth the trouble on a Tuesday afternoon when the deadline is Friday.\n\n## What changed in my teaching\n\n- I stopped covering material and started choosing it. Nobody remembers the complete syllabus; they remember four ideas.\n- I say \"I don't know, let me check\" out loud. It cost me nothing and changed the room.\n- I mark harshly on reasoning and gently on presentation, and I say so beforehand.\n- I stopped assuming that silence means understanding. It usually means the opposite, plus tiredness.\n\n## Being taught\n\nThe reversal is the part nobody prepares you for. My research students have taught me tools I would not have picked up, and more usefully, they have questioned framings I had stopped noticing were choices. A good PhD student is a slow, thorough audit of your assumptions.\n\n> The most useful sentence a supervisor can hear is: \"I don't think that's the right question.\"\n\n## What it is for\n\nTeaching does not scale and does not compound the way a paper does. One room, one term, gone. But the papers age and the students do not, and thirty years on it is the students who keep writing.",
+      "tags": ["teaching", "life", "thoughts"],
+      "visibility": "public",
+      "publishedAt": "2026-07-20T08:00:00.000Z",
+      "author": {
+        "name": "Kalpana Thakre"
+      }
+    },
+    {
+      "id": "8",
+      "slug": "private-reading-notes-dostoevsky",
+      "title": "Private Reading Notes: Dostoevsky's The Idiot",
+      "excerpt": "Personal notes on a second reading of The Idiot.",
+      "content": "Private. Working notes for something I may or may not write properly later.\n\n## On the Grand Inquisitor\n\nReread the chapter after a gap of maybe fifteen years. What strikes me now is how good the argument against Christ is. Dostoevsky gives the Inquisitor the strongest possible case — bread, mystery, authority, the plain observation that people mostly do not want freedom because freedom is unbearable — and then answers it with a kiss and no counter-argument at all.\n\nEither that is the weakest ending in the novel or the only possible one. I have gone back and forth on this for two decades and I am no longer sure the ambiguity is accidental.\n\n## Small things\n\n- Ivan is the most sympathetically drawn character and the one the book most thoroughly refutes.\n- Nobody in Dostoevsky ever has one conversation. They have four, all at once, and only one of them is out loud.\n- The comic passages are better than they are given credit for. Fyodor Pavlovich at the monastery is farce.\n- *Notes from Underground* reads differently every decade. In my twenties: a portrait of someone else.\n\n## Question I cannot resolve\n\nIs Alyosha convincing, or does he only work because the alternatives are drawn so vividly? I suspect the book knows this is a fair question, which is why he is given so little to do and so much to absorb.\n\n## To follow up\n\n- Reread *Demons*, which I have avoided.\n- Find the Pevear and Volokhonsky introduction again.\n- The Frank biography, volume four.",
+      "tags": ["private", "books", "notes"],
+      "visibility": "private",
+      "publishedAt": "2026-07-18T22:00:00.000Z",
+      "author": {
+        "name": "Kalpana Thakre"
+      }
+    }
+  ]
+}
